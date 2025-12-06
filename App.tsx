@@ -58,6 +58,7 @@ const App: React.FC = () => {
       toolName: lang === 'en' ? selectedTool.name : selectedTool.namePt,
       input,
       output,
+      outputType: selectedTool.outputType,
       timestamp: Date.now()
     };
     

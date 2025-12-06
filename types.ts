@@ -13,6 +13,9 @@ export type ToolType =
   | 'image_gen' 
   | 'general_text';
 
+export type InputType = 'text' | 'image' | 'both';
+export type OutputType = 'text' | 'image';
+
 export interface Tool {
   id: number;
   type: ToolType; 
@@ -22,13 +25,16 @@ export interface Tool {
   category: Category;
   description: string;
   descriptionPt: string;
+  inputType: InputType;
+  outputType: OutputType;
 }
 
 export interface HistoryItem {
   id: string;
   toolName: string;
   input: string;
-  output: string;
+  output: string; // Can be text or base64 image url
+  outputType: OutputType;
   timestamp: number;
 }
 
@@ -62,5 +68,8 @@ export interface Translations {
     input_label: string;
     result_label: string;
     placeholder: string;
+    upload_image: string;
+    remove_image: string;
+    download_image: string;
   };
 }

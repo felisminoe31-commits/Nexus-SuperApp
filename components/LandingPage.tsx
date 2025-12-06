@@ -12,6 +12,44 @@ interface LandingPageProps {
   onEnter: (type: 'premium' | 'daily' | 'free') => void;
 }
 
+// Moved Card component outside to avoid re-creation on render and fix TypeScript inference issues
+const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / width - 0.5);
+    y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative transition-all duration-200 ease-out ${className}`}
+    >
+      <div style={{ transform: "translateZ(20px)" }}>
+        {children}
+      </div>
+    </motion.div>
+  );
+};
+
 const LandingPage: React.FC<LandingPageProps> = ({ lang, onEnter }) => {
   const t = TRANSLATIONS[lang].landing;
   const tDash = TRANSLATIONS[lang].dashboard;
@@ -21,44 +59,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ lang, onEnter }) => {
   // Parallax for Hero Text
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-
-  // Mouse Tilt Logic for Cards
-  const Card = ({ children, className }: { children: React.ReactNode, className?: string }) => {
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const mouseXSpring = useSpring(x);
-    const mouseYSpring = useSpring(y);
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-      x.set(mouseX / width - 0.5);
-      y.set(mouseY / height - 0.5);
-    };
-
-    const handleMouseLeave = () => {
-      x.set(0);
-      y.set(0);
-    };
-
-    return (
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className={`relative transition-all duration-200 ease-out ${className}`}
-      >
-        <div style={{ transform: "translateZ(20px)" }}>
-          {children}
-        </div>
-      </motion.div>
-    );
-  };
 
   return (
     <div ref={containerRef} className="relative z-10 min-h-screen bg-[#09090b] overflow-hidden selection:bg-neon-blue/30 text-white">
