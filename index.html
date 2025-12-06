@@ -1,114 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="pt-br">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Nexus SuperApp</title>
+    <title>Nexus SuperApp AI</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              display: ['Orbitron', 'sans-serif'],
-            },
+            fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Orbitron', 'sans-serif'] },
             colors: {
-              glass: {
-                100: 'rgba(255, 255, 255, 0.1)',
-                200: 'rgba(255, 255, 255, 0.2)',
-                300: 'rgba(255, 255, 255, 0.3)',
-                dark: 'rgba(0, 0, 0, 0.6)',
-              },
-              neon: {
-                blue: '#00f3ff',
-                purple: '#bc13fe',
-                green: '#0aff68',
-                pink: '#ff0099',
-              }
+              glass: { 100: 'rgba(255, 255, 255, 0.1)', 200: 'rgba(255, 255, 255, 0.2)', dark: 'rgba(0, 0, 0, 0.95)' },
+              neon: { blue: '#00f3ff', purple: '#bc13fe' }
             },
-            animation: {
-              'blob': 'blob 7s infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'spin-slow': 'spin 15s linear infinite',
-              'float': 'float 6s ease-in-out infinite',
-            },
-            keyframes: {
-              blob: {
-                '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                '100%': { transform: 'translate(0px, 0px) scale(1)' },
-              },
-              float: {
-                '0%': { transform: 'translateY(0px)' },
-                '50%': { transform: 'translateY(-20px)' },
-                '100%': { transform: 'translateY(0px)' },
-              }
-            }
-          },
-        },
+            animation: { 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+          }
+        }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-      body {
-        background-color: #09090b;
-        color: #ffffff;
-        overflow-x: hidden;
-      }
-      /* Custom Scrollbar for Glassmorphism */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-      }
-      .glass-panel {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      }
-      .neon-text {
-        text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-      }
-      .neon-box-shadow {
-        box-shadow: 0 0 20px rgba(188, 19, 254, 0.3), inset 0 0 10px rgba(188, 19, 254, 0.1);
-      }
-      
-      /* 3D Utilities */
-      .perspective-1000 { perspective: 1000px; }
-      .transform-style-3d { transform-style: preserve-3d; }
-      .backface-hidden { backface-visibility: hidden; }
-      
-      /* Marquee Animation */
-      @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-      .animate-marquee { animation: marquee 40s linear infinite; }
-      .animate-marquee-reverse { animation: marquee 40s linear infinite reverse; }
+      body { background-color: #050505; color: #fff; overflow-x: hidden; }
+      .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+      .neon-text { text-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+      /* Esconde barra de rolagem para parecer App Nativo */
+      ::-webkit-scrollbar { width: 0px; background: transparent; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.25",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0"
-  }
-}
-</script>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+        "@google/generative-ai": "https://esm.sh/@google/generative-ai@0.1.3"
+      }
+    }
+    </script>
 </head>
-  <body>
+<body>
     <div id="root"></div>
-  </body>
+
+    <script type="module">
+        import React, { useState, useEffect } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { Sparkles, Lock, Zap, Send, ArrowLeft, Image as ImageIcon, FileText, CheckCircle } from 'lucide-react';
+        import { GoogleGenerativeAI } from '@google/generative-ai';
+
+        // ⚠️ --- ÁREA DE CONFIGURAÇÃO (EDITE AQUI) --- ⚠️
+        const API_KEY = "AIzaSy_SUA_CHAVE_AQUI"; // <--- COLE SUA CHAVE GEMINI AQUI
+        const LINK_PAGAMENTO = "https://oxapay.com/pay/SEU_LINK"; // <--- SEU LINK OXAPAY
+
+        // Inicializa a IA
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        function App() {
+            const [view, setView] = useState('landing'); 
+            const [isPremium, setIsPremium] = useState(false);
+            const [activeTool, setActiveTool] = useState(null);
+            const [userInput, setUserInput] = useState('');
+            const [aiResponse, setAiResponse] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            // Verifica se o usuário pagou (Redirecionamento Oxapay)
+            useEffect(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const status = urlParams.get('status');
+                const savedPremium = localStorage.getItem('nexus_premium');
+
+                if (savedPremium === 'true' || status === 'paid_success_7usdt') {
+                    setIsPremium(true);
+                    if (status) {
+                        localStorage.setItem('nexus_premium', 'true');
+                        // Limpa a URL
+                        window.history.replaceState({}, document.title, "/");
+                        alert("💎 Pagamento Confirmado! Nexus Premium Ativado.");
+                    }
+                }
+            }, []);
+
+            // Função que chama o Google Gemini
+            async function handleGenerate() {
+                if (!userInput) return;
+                setLoading(true);
+                try {
+                    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+                    
+                    let prompt = userInput;
+                    // Prompts de Sistema Humanizados
+                    if (activeTool?.id === 'resume') prompt = `Aja como um Especialista em RH Sênior. Reescreva e melhore este currículo para torná-lo irresistível e profissional: ${userInput}`;
+                    if (activeTool?.id === 'email') prompt = `Aja como um CEO Executivo. Reescreva este texto como um e-mail formal, polido e persuasivo: ${userInput}`;
+                    if (activeTool?.id === 'roast') prompt = `Aja como um comediante ácido de stand-up. Faça uma análise engraçada e sarcástica (Roast) deste perfil: ${userInput}`;
+                    if (activeTool?.id === 'idea') prompt = `Dê 5 ideias virais e matadoras sobre este tópico: ${userInput}`;
+
+                    const result = await model.generateContent(prompt);
+                    const response = await result.response;
+                    setAiResponse(response.text());
+                } catch (error) {
+                    setAiResponse("Erro na conexão: Verifique se sua Chave API está correta no código. Detalhes: " + error.message);
+                }
+                setLoading(false);
+            }
+
+            // TELA 1: LANDING PAGE (Venda)
+            if (view === 'landing' && !isPremium) {
+                return React.createElement('div', { className: "min-h-screen flex flex-col items-center justify-center p-6 text-center relative" },
+                    // Fundo Animado
+                    React.createElement('div', { className: "absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black -z-10" }),
+                    
+                    // Logo Grande
+                    React.createElement('h1', { className: "text-6xl font-display font-bold mb-2 neon-text tracking-tighter" }, "NEXUS"),
+                    React.createElement('p', { className: "text-cyan-400 mb-8 text-lg tracking-widest uppercase" }, "19 Ferramentas. 1 Super App."),
+                    
+                    // Botões de Ação
+                    React.createElement('div', { className: "w-full max-w-md space-y-4 z-10" },
+                        React.createElement('a', { 
+                            href: LINK_PAGAMENTO,
+                            className: "block w-full bg-white text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:scale-105 transition shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                        }, React.createElement(Sparkles, { size: 20, className: "text-purple-600" }), "Desbloquear Vitalício (7 USDT)"),
+                        
+                        React.createElement('button', { 
+                            onClick: () => setView('dashboard'),
+                            className: "block w-full glass-panel text-gray-400 py-3 rounded-xl text-sm border border-white/10"
+                        }, "Entrar (Versão Grátis Limitada)")
+                    )
+                );
+            }
+
+            // TELA 2: DASHBOARD (Menu de Ferramentas)
+            if (view === 'dashboard' || (view === 'landing' && isPremium)) {
+                const tools = [
+                    { id: 'resume', name: 'Resume Builder', icon: FileText, color: 'text-blue-400' },
+                    { id: 'email', name: 'Email Polisher', icon: Send, color: 'text-green-400' },
+                    { id: 'roast', name: 'Roast Profile', icon: Zap, color: 'text-orange-400' },
+                    { id: 'idea', name: 'Viral Ideas', icon: Sparkles, color: 'text-purple-400' },
+                ];
+
+                return React.createElement('div', { className: "min-h-screen p-6 pb-20" },
+                    React.createElement('div', { className: "flex justify-between items-center mb-8" },
+                        React.createElement('h2', { className: "text-2xl font-display font-bold neon-text" }, "NEXUS OS"),
+                        isPremium && React.createElement('span', { className: "bg-cyan-950 text-cyan-400 px-3 py-1 rounded-full text-xs border border-cyan-500/30 flex items-center gap-1" }, React.createElement(CheckCircle, {size:12}), "PREMIUM")
+                    ),
+                    
+                    React.createElement('div', { className: "grid grid-cols-2 gap-4" },
+                        tools.map(tool => 
+                            React.createElement('button', {
+                                key: tool.id,
+                                onClick: () => { setActiveTool(tool); setView('tool'); },
+                                className: "glass-panel p-6 rounded-2xl flex flex-col items-center gap-3 active:scale-95 transition hover:bg-white/5"
+                            },
+                                React.createElement(tool.icon, { size: 32, className: tool.color }),
+                                React.createElement('span', { className: "font-medium text-sm" }, tool.name)
+                            )
+                        )
+                    ),
+                    
+                    !isPremium && React.createElement('div', { className: "mt-8 p-4 glass-panel rounded-xl border border-yellow-500/30 text-center" },
+                        React.createElement('p', { className: "text-sm text-gray-400 mb-2" }, "Você está no modo gratuito."),
+                        React.createElement('a', { href: LINK_PAGAMENTO, className: "text-yellow-400 font-bold text-sm underline" }, "Fazer Upgrade Agora")
+                    )
+                );
+            }
+
+            // TELA 3: FERRAMENTA (Chat com a IA)
+            if (view === 'tool' && activeTool) {
+                return React.createElement('div', { className: "min-h-screen p-6 flex flex-col" },
+                    React.createElement('button', { onClick: () => { setView('dashboard'); setAiResponse(''); setUserInput(''); }, className: "self-start mb-6 flex gap-2 text-gray-400 hover:text-white" },
+                        React.createElement(ArrowLeft, { size: 20 }), "Voltar"
+                    ),
+                    
+                    React.createElement('h2', { className: "text-2xl font-bold mb-4 flex items-center gap-2" },
+                        React.createElement(activeTool.icon, { className: activeTool.color }), activeTool.name
+                    ),
+                    
+                    React.createElement('textarea', {
+                        value: userInput,
+                        onChange: (e) => setUserInput(e.target.value),
+                        placeholder: `Digite aqui para o ${activeTool.name} processar...`,
+                        className: "w-full h-40 glass-panel rounded-xl p-4 text-white focus:border-cyan-500 outline-none mb-4 placeholder-gray-600 resize-none"
+                    }),
+                    
+                    React.createElement('button', {
+                        onClick: handleGenerate,
+                        disabled: loading,
+                        className: "w-full bg-gradient-to-r from-cyan-700 to-blue-700 text-white font-bold py-4 rounded-xl flex justify-center items-center shadow-lg shadow-cyan-900/20"
+                    }, loading ? "Processando..." : "Gerar Resultado"),
+
+                    aiResponse && React.createElement('div', { className: "mt-6 p-5 glass-panel rounded-xl border border-cyan-500/30 relative" },
+                        React.createElement('div', { className: "absolute -top-3 left-4 bg-black px-2 text-xs text-cyan-400 uppercase tracking-widest" }, "Resultado Nexus"),
+                        React.createElement('p', { className: "whitespace-pre-wrap leading-relaxed text-gray-200" }, aiResponse)
+                    )
+                );
+            }
+        }
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
 </html>
