@@ -3,7 +3,7 @@ import { TOOL_SYSTEM_PROMPTS, FALLBACK_SYSTEM_PROMPT } from '../constants';
 import { Tool, Language } from '../types';
 
 // Initialize the Gemini AI client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: AIzaSyD7K8sOhoBNpC-Aia4bCA9u13Ve4K_RZuI });
 
 /**
  * Calls the Google Gemini API with multimodal support.
