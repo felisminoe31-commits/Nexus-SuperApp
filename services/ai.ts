@@ -4,7 +4,7 @@ import { ToolType, Language } from '../types';
 
 // Initialize the Gemini AI client
 // Note: process.env.API_KEY is injected by the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: AIzaSyD7K8sOhoBNpC-Aia4bCA9u13Ve4K_RZuI });
 
 /**
  * Calls the Google Gemini API with the appropriate system prompt based on the tool type.
